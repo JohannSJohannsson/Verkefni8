@@ -20,15 +20,35 @@ const text = (() => {
       deleteItem(e);
       edit(e);
       commit(e);
-  });
-  _items.addEventListener("keyup", commit);
+    });
+    _items.addEventListener("keyup", commit);
   }
 
   function formHandler(e) {
     e.preventDefault();
-    let strengur = document.querySelector(".form__input").value;
-    if(strengur.trim() != ""){
-      add(strengur);
+    const spantxt = document.createTextNode(add());
+
+    if (spantxt.length > 0){
+      const element = document.getElementsByClassName("items")[0];
+      const line = document.createElement("li");
+      line.setAttribute("class", "item");
+      element.appendChild(line);
+
+      const input = document.createElement("input");
+      input.setAttribute("class", "item__checkbox");
+      input.setAttribute("type", "checkbox");
+      line.appendChild(input);
+
+      const span = document.createElement("span");
+      span.setAttribute("class", "item__text");
+      span.appendChild(spantxt);
+      line.appendChild(span);
+
+      const button = document.createElement("button");
+      const btntxt = document.createTextNode("Eyða");
+      button.setAttribute("class", "item__button");
+      button.appendChild(btntxt);
+      line.appendChild(button);
     }
     document.querySelector(".form__input").value = "";
   }
@@ -45,6 +65,7 @@ const text = (() => {
     if(e.target.className === "item__text"){
       const texti = e.target.textContent;
       const textaskra = document.createElement("input");
+      textaskra.focus();
       textaskra.classList.add("item__edit");
       textaskra.setAttribute("type", "text");
       textaskra.value = texti;
@@ -54,7 +75,7 @@ const text = (() => {
 
   // event handler fyrir það að klára að breyta texta við færslu
   function commit(e) {
-    if((e.target.className === "item__edit")&&((e.key == "Enter"))) {
+    if((e.target.className === "item__edit")&&((e.key === "Enter"))) {
       const breyttGildi = e.target.value;
       const breyttSpan = document.createElement("span");
       breyttSpan.classList.add("item__text");
@@ -65,6 +86,8 @@ const text = (() => {
 
   // fall sem sér um að bæta við nýju item
   function add(value) {
+    const texti = document.querySelector(".form__input").value;
+    return texti;
   }
 
   // event handler til að eyða færslu
